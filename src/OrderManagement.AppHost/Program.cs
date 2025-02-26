@@ -1,7 +1,7 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 
-builder.AddProject<Projects.Eshop_Order>("webfrontend")
+builder.AddProject<Projects.Eshop_Order>("eshop_order")
     .WithExternalHttpEndpoints();
 
 

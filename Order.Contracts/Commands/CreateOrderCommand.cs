@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Order.Contracts.Commands
+﻿namespace Order.Writer.CommandHandlers
 {
-    internal class CreateOrderCommand
+    public class CreateOrderCommand
     {
+        public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
     }
 }
