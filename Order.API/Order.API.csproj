@@ -7,12 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\OrderManagement.ServiceDefaults\OrderManagement.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\src\OrderManagement.ServiceDefaults\OrderManagement.ServiceDefaults.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Handlers\" />
-    <Folder Include="Storage\" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Yarp.ReverseProxy" Version="2.1.0" />
+	</ItemGroup>
 
 </Project>
