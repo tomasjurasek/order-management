@@ -36,9 +36,16 @@ builder.Services.AddMassTransit(x =>
         {
             cfg.Host(builder.Configuration.GetConnectionString("messaging"));
 
+            // Consumer endpoints
             cfg.TopicEndpoint<string, CreateOrderCommand>(CreateOrderCommand.Topic, "order-writer", e =>
             {
                 e.ConfigureConsumer<CreateOrderCommandHandler>(context);
+            });
+
+            // Saga topic endpoints
+            cfg.TopicEndpoint<string, OrderCreatedEvent>(OrderCreatedEvent.Topic, "order-writer-saga", e =>
+            {
+                e.ConfigureSaga<OrderProcessState>(context);
             });
         });
 

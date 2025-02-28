@@ -15,7 +15,6 @@ public class CreateOrderCommandHandler : IConsumer<CreateOrderCommand>
 
     public async Task Consume(ConsumeContext<CreateOrderCommand> context)
     {
-        var lastOrder = _orderDbContext.Orders.LastOrDefault();
         var order = new Storage.DB.Order
         {
             Id = context.Message.OrderId,
@@ -25,6 +24,9 @@ public class CreateOrderCommandHandler : IConsumer<CreateOrderCommand>
 
         _orderDbContext.Orders.Add(order);
 
+        // Publish an event. With the outbox pattern,
+        // this message is stored and only dispatched after the DB transaction commits.
+
         await context.Publish(new OrderCreatedEvent
         {
             OrderId = order.Id,
@@ -32,6 +34,7 @@ public class CreateOrderCommandHandler : IConsumer<CreateOrderCommand>
             Description = order.Description
         });
 
+        // Commit the changes. Only after this commit will the outbox dispatch the event.
         await _orderDbContext.SaveChangesAsync();
     }
 }
