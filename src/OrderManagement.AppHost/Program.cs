@@ -32,9 +32,4 @@ builder.AddProject<Projects.Order_API>("order-api")
     .WithReference(orderWriter)
     .WithReference(orderReader);
 
-
-builder.AddProject<Projects.Eshop_Order>("eshop-order")
-    .WithExternalHttpEndpoints();
-
-
 builder.Build().Run();
