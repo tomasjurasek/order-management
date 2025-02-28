@@ -5,7 +5,7 @@ using Order.Writer.CommandHandlers;
 var builder = Host.CreateApplicationBuilder(args);
 
 builder.AddServiceDefaults();
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddHostedService<LegacyOrderWorker>();
 
 builder.Services.AddMassTransit(x =>
 {

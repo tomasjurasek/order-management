@@ -1,5 +1,6 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Order.Contracts.Events;
 using Order.Writer.CommandHandlers;
 using Order.Writer.Storage.DB;
 
@@ -26,7 +27,7 @@ builder.Services.AddMassTransit(x =>
     x.AddRider(rider =>
     {
         rider.AddConsumer<CreateOrderCommandHandler>();
-
+        rider.AddProducer<OrderCreatedEvent>(OrderCreatedEvent.Topic);
         rider.UsingKafka((context, cfg) =>
         {
             cfg.Host(builder.Configuration.GetConnectionString("messaging"));

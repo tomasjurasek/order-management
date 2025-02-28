@@ -9,6 +9,8 @@ namespace Order.Writer.Storage.DB
         {
         }
 
+        public DbSet<Order> Orders { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

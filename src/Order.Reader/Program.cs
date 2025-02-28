@@ -1,8 +1,37 @@
+using MassTransit;
+using Order.Contracts.Events;
+using Order.Reader.Handlers;
+using Order.Reader.Storage;
+using StackExchange.Redis;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-// Add services to the container.
+builder.Services.AddSingleton<IStorage, Storage>();
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("order-reader-db")));
+
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingInMemory();
+
+    x.AddRider(rider =>
+    {
+        rider.AddConsumer<OrderCreatedConsumer>();
+        rider.UsingKafka((context, cfg) =>
+        {
+            cfg.Host(builder.Configuration.GetConnectionString("messaging"));
+
+            cfg.TopicEndpoint<string, OrderCreatedEvent>(OrderCreatedEvent.Topic, "order-reader", e =>
+            {
+                e.ConfigureConsumer<OrderCreatedConsumer>(context);
+            });
+        });
+
+    });
+
+});
+
 
 var app = builder.Build();
 
@@ -12,27 +41,11 @@ app.MapDefaultEndpoints();
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/customers/{Id:guid}", async(Guid Id, IStorage storage) =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    return await storage.GetCustomer(Id);
 });
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

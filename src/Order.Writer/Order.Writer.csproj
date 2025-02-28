@@ -22,4 +22,8 @@
     <ProjectReference Include="..\OrderManagement.ServiceDefaults\OrderManagement.ServiceDefaults.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Workers\" />
+  </ItemGroup>
+
 </Project>
