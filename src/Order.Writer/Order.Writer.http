@@ -1,6 +1,0 @@
-@Order.Writer_HostAddress = http://localhost:5268
-
-GET {{Order.Writer_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

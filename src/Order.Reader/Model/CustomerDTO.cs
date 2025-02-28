@@ -1,9 +1,8 @@
-﻿namespace Order.Reader.Model
-{
-    public class CustomerDTO
-    {
-        public Guid Id { get; set; }
+﻿namespace Order.Reader.Model;
 
-        public IList<OrderDTO> Orders { get; set; }
-    }
+public class CustomerDTO
+{
+    public Guid Id { get; set; }
+
+    public IList<OrderDTO> Orders { get; set; }
 }

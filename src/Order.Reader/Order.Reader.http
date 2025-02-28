@@ -1,6 +1,0 @@
-@Order.Reader_HostAddress = http://localhost:5118
-
-GET {{Order.Reader_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

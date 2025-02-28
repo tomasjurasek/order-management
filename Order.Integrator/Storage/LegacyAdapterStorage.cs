@@ -1,50 +1,48 @@
 ﻿using Order.Integrator.Entities;
 
-namespace Order.Integrator.Storage
+namespace Order.Integrator.Storage;
+
+public class LegacyAdapterStorage
 {
-    public class LegacyAdapterStorage
+    public IList<Zakazka> GetZakazky()
     {
-
-        public IList<Zakazka> GetZakazky()
+        return new List<Zakazka>
         {
-            return new List<Zakazka>
+            new Zakazka
             {
-                new Zakazka
-                {
-                    ZakazkaId = 1,
-                    Type = "Type1",
-                    Popisek = "Popisek1"
-                },
-                new Zakazka
-                {
-                    ZakazkaId = 2,
-                    Type = "Type2",
-                    Popisek = "Popisek2"
-                }
-            };
-        }
+                ZakazkaId = 1,
+                Type = "Type1",
+                Popisek = "Popisek1"
+            },
+            new Zakazka
+            {
+                ZakazkaId = 2,
+                Type = "Type2",
+                Popisek = "Popisek2"
+            }
+        };
+    }
 
-        public IList<Polozky> GetPolozky()
+    public IList<Polozka> GetPolozky()
+    {
+        return new List<Polozka>
         {
-            return new List<Polozky>
+            new Polozka
             {
-                new Polozky
-                {
-                    PolozkaId = Guid.NewGuid(),
-                    ZakazkaId = 1,
-                    Popis = "Popis1",
-                    Mnozstvi = 1,
-                    Cena = 1
-                },
-                new Polozky
-                {
-                    PolozkaId = Guid.NewGuid(),
-                    ZakazkaId = 2,
-                    Popis = "Popis2",
-                    Mnozstvi = 2,
-                    Cena = 2
-                }
-            };
-        }
+                PolozkaId = Guid.NewGuid(),
+                ZakazkaId = 1,
+                Popis = "Popis1",
+                Mnozstvi = 1,
+                Cena = 1
+            },
+            new Polozka
+            {
+                PolozkaId = Guid.NewGuid(),
+                ZakazkaId = 2,
+                Popis = "Popis2",
+                Mnozstvi = 2,
+                Cena = 2
+            }
+        };
     }
 }

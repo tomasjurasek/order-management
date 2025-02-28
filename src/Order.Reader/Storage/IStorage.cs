@@ -1,12 +1,9 @@
 ﻿using Order.Reader.Model;
 
-namespace Order.Reader.Storage
+namespace Order.Reader.Storage;
+
+public interface IStorage
 {
-    public interface IStorage
-    {
-        Task<CustomerDTO?> GetCustomer(Guid id);
-        Task Store(CustomerDTO customer);
-    }
-
-
+    Task<CustomerDTO?> GetCustomer(Guid id);
+    Task Store(CustomerDTO customer);
 }
