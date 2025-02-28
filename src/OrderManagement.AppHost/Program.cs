@@ -18,7 +18,7 @@ var orderReader = builder.AddProject<Projects.Order_Reader>("order-reader")
      .WithReference(messaging)
      .WaitFor(messaging)
      .WithReference(orderReaderDb)
-     .WaitFor(orderWriterDb);
+     .WaitFor(orderReaderDb);
 
 
 builder.AddProject<Projects.Order_Integrator>("order-integrator")
