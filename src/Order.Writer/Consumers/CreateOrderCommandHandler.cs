@@ -6,7 +6,7 @@ namespace Order.Writer.CommandHandlers
     {
         public Task Consume(ConsumeContext<CreateOrderCommand> context)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

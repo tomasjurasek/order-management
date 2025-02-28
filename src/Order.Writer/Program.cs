@@ -1,10 +1,54 @@
+using MassTransit;
+using Microsoft.EntityFrameworkCore;
+using Order.Writer.CommandHandlers;
+using Order.Writer.Storage.DB;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
 // Add services to the container.
+builder.Services.AddDbContext<OrderDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("order-writer-db"));
+});
+
+
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingInMemory();
+
+    x.AddEntityFrameworkOutbox<OrderDbContext>(outbox =>
+    {
+        outbox.UseSqlServer();
+        outbox.UseBusOutbox();
+    });
+    x.AddRider(rider =>
+    {
+        rider.AddConsumer<CreateOrderCommandHandler>();
+
+        rider.UsingKafka((context, cfg) =>
+        {
+            cfg.Host(builder.Configuration.GetConnectionString("messaging"));
+
+            cfg.TopicEndpoint<string, CreateOrderCommand>(CreateOrderCommand.Topic, "order-writer", e =>
+            {
+                e.ConfigureConsumer<CreateOrderCommandHandler>(context);
+            });
+        });
+
+    });
+
+});
 
 var app = builder.Build();
+
+
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+var context = services.GetRequiredService<OrderDbContext>();
+context.Database.Migrate();
+
 
 app.MapDefaultEndpoints();
 
@@ -12,27 +56,12 @@ app.MapDefaultEndpoints();
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/test", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    return Results.Ok();
 });
 
-app.Run();
+await app.RunAsync();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+
