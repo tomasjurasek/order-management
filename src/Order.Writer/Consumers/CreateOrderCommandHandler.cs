@@ -26,7 +26,6 @@ public class CreateOrderCommandHandler : IConsumer<CreateOrderCommand>
 
         // Publish an event. With the outbox pattern,
         // this message is stored and only dispatched after the DB transaction commits.
-
         await context.Publish(new OrderCreatedEvent
         {
             OrderId = order.Id,

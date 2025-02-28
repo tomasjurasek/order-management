@@ -18,8 +18,7 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
 
 builder.Services.AddMassTransit(x =>
 {
-    x.AddSagaStateMachine<OrderOrchestrator, OrderProcessState>();
-    x.SetInMemorySagaRepositoryProvider();
+    x.AddSagaStateMachine<OrderOrchestrator, OrderProcessState>().InMemoryRepository();
 
     x.UsingInMemory();
 
@@ -45,6 +44,7 @@ builder.Services.AddMassTransit(x =>
             // Saga topic endpoints
             cfg.TopicEndpoint<string, OrderCreatedEvent>(OrderCreatedEvent.Topic, "order-writer-saga", e =>
             {
+                //e.ConfigureSaga<OrderProcessState>(context);
                 e.ConfigureSagas(context);
             });
         });
