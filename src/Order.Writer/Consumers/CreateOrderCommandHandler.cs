@@ -18,7 +18,7 @@ namespace Order.Writer.CommandHandlers
             var lastOrder = _orderDbContext.Orders.LastOrDefault();
             var order = new Storage.DB.Order
             {
-                OrderId = context.Message.OrderId ?? lastOrder?.OrderId + 1 ?? 1,
+                Id = context.Message.OrderId,
                 Description =
                 context.Message.Description
             };
@@ -27,7 +27,7 @@ namespace Order.Writer.CommandHandlers
 
             await context.Publish(new OrderCreatedEvent
             {
-                OrderId = order.OrderId,
+                OrderId = order.Id,
                 CreatedAt = DateTimeOffset.UtcNow,
                 Description = order.Description
             });

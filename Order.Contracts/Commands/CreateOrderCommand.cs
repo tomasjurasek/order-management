@@ -1,10 +1,10 @@
-﻿namespace Order.Writer.CommandHandlers
+﻿using Order.Contracts;
+
+namespace Order.Writer.CommandHandlers
 {
-    public class CreateOrderCommand
+    public class CreateOrderCommand : OrderMessage
     {
         public static string Topic = "commands.create-order";
-
-        public long? OrderId { get; init; }
         public string Description { get; init; }
         public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
 

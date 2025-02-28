@@ -2,6 +2,7 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Order.Contracts.Events;
 using Order.Writer.CommandHandlers;
+using Order.Writer.Orchestrator;
 using Order.Writer.Storage.DB;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,9 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
 
 builder.Services.AddMassTransit(x =>
 {
+    x.AddSagaStateMachine<OrderSaga, OrderProcessState>();
+    x.SetInMemorySagaRepositoryProvider();
+
     x.UsingInMemory();
 
     x.AddEntityFrameworkOutbox<OrderDbContext>(outbox =>
