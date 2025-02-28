@@ -43,10 +43,10 @@ builder.Services.AddMassTransit(x =>
             });
 
             // Saga topic endpoints
-            //cfg.TopicEndpoint<string, OrderCreatedEvent>(OrderCreatedEvent.Topic, "order-writer-saga", e =>
-            //{
-            //    e.ConfigureSaga<OrderProcessState>(context);
-            //});
+            cfg.TopicEndpoint<string, OrderCreatedEvent>(OrderCreatedEvent.Topic, "order-writer-saga", e =>
+            {
+                e.ConfigureSagas(context);
+            });
         });
 
     });

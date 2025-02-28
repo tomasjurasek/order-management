@@ -32,6 +32,7 @@ public class LegacyOrderWorker : BackgroundService
                 var createOrderCommand = new CreateOrderCommand
                 {
                     OrderId = Guid.NewGuid(),
+                    Description = "TEST",
                     OrderItems = polozky.Where(s => s.ZakazkaId == zakazka.ZakazkaId).Select(s => new Contracts.DTO.OrderItem(s.PolozkaId, 1)).ToList(),
                     Properties = new Dictionary<string, string>
                     {
