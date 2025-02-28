@@ -14,7 +14,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Order.API\Order.API.csproj" />
     <ProjectReference Include="..\..\Order.Integrator\Order.Integrator.csproj" />
-    <ProjectReference Include="..\Order.Partners\Order.Partners.csproj" />
     <ProjectReference Include="..\Order.Reader\Order.Reader.csproj" />
     <ProjectReference Include="..\Order.Writer\Order.Writer.csproj" />
   </ItemGroup>
