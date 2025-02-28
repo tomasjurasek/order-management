@@ -23,11 +23,25 @@ public class LegacyOrderWorker : BackgroundService
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            var zakazka = _legacyStorage.GetZakazky();
-            var polozky = _legacyStorage.GetPolozky();
-
             var producer = scope.ServiceProvider.GetRequiredService<ITopicProducer<CreateOrderCommand>>();
-            await producer.Produce(new CreateOrderCommand());
+
+            var zakazky = _legacyStorage.GetZakazky();
+            var polozky = _legacyStorage.GetPolozky();
+            foreach (var zakazka in zakazky)
+            {
+                var createOrderCommand = new CreateOrderCommand
+                {
+                    OrderId = Guid.NewGuid(),
+                    OrderItems = polozky.Where(s => s.ZakazkaId == zakazka.ZakazkaId).Select(s => new Contracts.DTO.OrderItem(s.PolozkaId, 1)).ToList(),
+                    Properties = new Dictionary<string, string>
+                    {
+                        {"legacyOrderId", zakazka.ZakazkaId.ToString()}
+                    }
+                };
+
+                await producer.Produce(createOrderCommand);
+                await Task.Delay(1000, stoppingToken);
+            }
 
             await Task.Delay(5000, stoppingToken);
         }

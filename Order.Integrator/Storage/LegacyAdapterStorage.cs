@@ -30,7 +30,7 @@ namespace Order.Integrator.Storage
             {
                 new Polozky
                 {
-                    PolozkaId = 1,
+                    PolozkaId = Guid.NewGuid(),
                     ZakazkaId = 1,
                     Popis = "Popis1",
                     Mnozstvi = 1,
@@ -38,7 +38,7 @@ namespace Order.Integrator.Storage
                 },
                 new Polozky
                 {
-                    PolozkaId = 2,
+                    PolozkaId = Guid.NewGuid(),
                     ZakazkaId = 2,
                     Popis = "Popis2",
                     Mnozstvi = 2,

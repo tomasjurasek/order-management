@@ -10,7 +10,11 @@
     <ProjectReference Include="..\src\OrderManagement.ServiceDefaults\OrderManagement.ServiceDefaults.csproj" />
   </ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Yarp.ReverseProxy" Version="2.1.0" />
+		<PackageReference Include="Microsoft.Extensions.ServiceDiscovery" Version="9.1.0" />
+		<PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Abstractions" Version="9.1.0" />
+		<PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Dns" Version="9.1.0" />
+		<PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.1.0" />
+		<PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
 	</ItemGroup>
 
 </Project>

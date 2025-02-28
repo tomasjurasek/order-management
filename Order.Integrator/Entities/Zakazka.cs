@@ -12,7 +12,7 @@ namespace Order.Integrator.Entities
 
     public class Polozky
     {
-        public long PolozkaId { get; set; }
+        public Guid PolozkaId { get; set; }
         public long ZakazkaId { get; set; }
         public string Popis { get; set; }
         public int Mnozstvi { get; set; }
