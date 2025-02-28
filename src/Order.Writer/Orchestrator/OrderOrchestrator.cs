@@ -7,7 +7,7 @@ using Order.Contracts.Events.Payment;
 
 namespace Order.Writer.Orchestrator;
 
-public class OrderSaga : MassTransitStateMachine<OrderProcessState>
+public class OrderOrchestrator : MassTransitStateMachine<OrderProcessState>
 {
     public Event<OrderCreatedEvent> OrderCreated { get; private set; }
     public Event<PaymentCompletedEvent> PaymentCompleted { get; private set; }
@@ -28,7 +28,7 @@ public class OrderSaga : MassTransitStateMachine<OrderProcessState>
         Event(() => OrderReserved, x => x.CorrelateById(c => c.Message.OrderId));
     }
 
-    public OrderSaga()
+    public OrderOrchestrator()
     {
         ConfigureCorrelationIds();
 

@@ -1,7 +1,7 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-
-var messaging = builder.AddKafka("messaging")
+var messaging = builder
+    .AddKafka("messaging")
     .WithKafkaUI();
 
 var orderWriterDb = builder.AddSqlServer("order-writer-db").WithDataVolume();
